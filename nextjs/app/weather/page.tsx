@@ -56,6 +56,7 @@ export default function WeatherPage() {
     Record<string, DebugEnvelope<WeatherNormalizedItem> | null>
   >({})
   const [loadingTab, setLoadingTab] = useState<string | null>(null)
+  const [loadingAll, setLoadingAll] = useState(false)
 
   const activeDef = TAB_DEFS.find((tab) => tab.key === activeTab) ?? TAB_DEFS[0]
   const activeData = dataByTab[activeDef.key]
@@ -107,26 +108,81 @@ export default function WeatherPage() {
     },
   ]
 
+  const persistResult = async (
+    key: string,
+    endpoint: string,
+    payload: DebugEnvelope<WeatherNormalizedItem>
+  ) => {
+    try {
+      await fetch("/api/debug/save-report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key, endpoint, payload }),
+      })
+    } catch {
+      // ignore persistence errors in debug UI
+    }
+  }
+
   const handleRefresh = async () => {
     setLoadingTab(activeDef.key)
     try {
       const response = await fetch(activeDef.endpoint, { cache: "no-store" })
       const payload = (await response.json()) as DebugEnvelope<WeatherNormalizedItem>
       setDataByTab((prev) => ({ ...prev, [activeDef.key]: payload }))
+      await persistResult(activeDef.key, activeDef.endpoint, payload)
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error"
-      setDataByTab((prev) => ({
-        ...prev,
-        [activeDef.key]: {
-          ok: false,
-          fetchedAt: new Date().toISOString(),
-          sources: activeDef.sources,
-          raw: null,
-          error: { message },
-        },
-      }))
+      const fallback: DebugEnvelope<WeatherNormalizedItem> = {
+        ok: false,
+        fetchedAt: new Date().toISOString(),
+        sources: activeDef.sources,
+        raw: null,
+        error: { message },
+      }
+      setDataByTab((prev) => ({ ...prev, [activeDef.key]: fallback }))
+      await persistResult(activeDef.key, activeDef.endpoint, fallback)
     } finally {
       setLoadingTab(null)
+    }
+  }
+
+  const handleRefreshAll = async () => {
+    setLoadingAll(true)
+    try {
+      const results = await Promise.all(
+        TAB_DEFS.map(async (tab) => {
+          try {
+            const response = await fetch(tab.endpoint, { cache: "no-store" })
+            const payload = (await response.json()) as DebugEnvelope<WeatherNormalizedItem>
+            await persistResult(tab.key, tab.endpoint, payload)
+            return [tab.key, payload] as const
+          } catch (error) {
+            const message = error instanceof Error ? error.message : "Unknown error"
+            const payload: DebugEnvelope<WeatherNormalizedItem> = {
+              ok: false,
+              fetchedAt: new Date().toISOString(),
+              sources: tab.sources,
+              raw: null,
+              error: { message },
+            }
+            await persistResult(tab.key, tab.endpoint, payload)
+            return [
+              tab.key,
+              payload,
+            ] as const
+          }
+        })
+      )
+      setDataByTab((prev) => {
+        const next = { ...prev }
+        for (const [key, payload] of results) {
+          next[key] = payload
+        }
+        return next
+      })
+    } finally {
+      setLoadingAll(false)
     }
   }
 
@@ -136,9 +192,14 @@ export default function WeatherPage() {
         title="Weather"
         eyebrow="技術検証"
         actions={
-          <button type="button" onClick={handleRefresh} disabled={loadingTab === activeDef.key}>
-            {loadingTab === activeDef.key ? "Refreshing..." : "Refresh"}
-          </button>
+          <div className="header-actions">
+            <button type="button" onClick={handleRefreshAll} disabled={loadingAll}>
+              {loadingAll ? "Refreshing all..." : "Refresh all"}
+            </button>
+            <button type="button" onClick={handleRefresh} disabled={loadingTab === activeDef.key || loadingAll}>
+              {loadingTab === activeDef.key ? "Refreshing..." : "Refresh"}
+            </button>
+          </div>
         }
       />
 
