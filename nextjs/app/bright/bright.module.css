@@ -1,0 +1,277 @@
+.page {
+  min-height: 100vh;
+  padding: 36px clamp(18px, 4vw, 48px) 80px;
+  background: radial-gradient(circle at top left, #fff6e1, #ffffff 55%, #eef6ff 100%);
+  color: #1b1a17;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.kicker {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #8d7f65;
+}
+
+.title {
+  font-size: clamp(28px, 4vw, 40px);
+  margin-top: 8px;
+}
+
+.meta {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #6a5e48;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.action {
+  border: 1px solid #1b1a17;
+  background: #fff;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.navLink {
+  border: 1px solid #f0e4d3;
+  background: #fff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: #6a5e48;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.cards {
+  display: grid;
+  gap: 18px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 18px 20px;
+  border: 1px solid #f0e4d3;
+  box-shadow: 0 10px 30px rgba(236, 200, 140, 0.18);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.cardTitle {
+  font-size: 20px;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.badgeOk {
+  background: #e3f6e9;
+  color: #1b6b3c;
+}
+
+.badgeWarn {
+  background: #fff2bf;
+  color: #8b6d00;
+}
+
+.badgeBad {
+  background: #ffe0dc;
+  color: #9b2d1f;
+}
+
+.badgeMuted {
+  background: #efeae4;
+  color: #6b6054;
+}
+
+.tripList {
+  display: grid;
+  gap: 10px;
+}
+
+.tripRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 16px;
+}
+
+.tripEntry {
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid #f0e4d3;
+  background: #fffefb;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statusText {
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.statusTextOk {
+  color: #1b6b3c;
+  background: #e9f6ee;
+}
+
+.statusTextWarn {
+  color: #8b6d00;
+  background: #fff4cc;
+}
+
+.statusTextBad {
+  color: #9b2d1f;
+  background: #ffe0dc;
+}
+
+.statusTextMuted {
+  color: #6b6054;
+  background: #f4efe8;
+}
+
+.tripTime {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.note {
+  font-size: 13px;
+  color: #6a5e48;
+}
+
+.directionTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #fff2d8;
+  color: #7a5b2a;
+  margin-bottom: 6px;
+  width: fit-content;
+}
+
+.timingTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #fff4cc;
+  color: #8b6d00;
+  margin-left: 6px;
+}
+
+.cardLink {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #1b1a17;
+  background: #fff;
+}
+
+.weatherGrid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.weatherCard {
+  background: #fff;
+  border-radius: 18px;
+  padding: 16px;
+  border: 1px solid #e6dccb;
+}
+
+.weatherTitle {
+  font-size: 16px;
+  color: #5c4b35;
+}
+
+.weatherValue {
+  font-size: 22px;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.footerNote {
+  font-size: 12px;
+  color: #7b6e5b;
+  margin-top: 24px;
+}
+
+.sourceList {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.sourceItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #f0e4d3;
+}
+
+.sourceLink {
+  border: 1px solid #1b1a17;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  white-space: nowrap;
+}

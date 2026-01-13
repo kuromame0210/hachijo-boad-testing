@@ -1,0 +1,288 @@
+.page {
+  min-height: 100vh;
+  padding: 36px clamp(18px, 4vw, 48px) 80px;
+  background: linear-gradient(180deg, #f4f3f0 0%, #eef1f2 55%, #f9f7f2 100%);
+  color: #1c1b1a;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.kicker {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #77726a;
+}
+
+.title {
+  font-size: clamp(28px, 4vw, 40px);
+  margin-top: 8px;
+}
+
+.meta {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #5d5952;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.action {
+  border: 1px solid #393532;
+  background: #fdfaf5;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.navLink {
+  border: 1px solid #dfd8cf;
+  background: #fdfaf5;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: #5d5952;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.cards {
+  display: grid;
+  gap: 18px;
+}
+
+.card {
+  background: #fdfaf5;
+  border-radius: 18px;
+  padding: 18px 20px;
+  border: 1px solid #dfd8cf;
+  box-shadow: 0 8px 20px rgba(120, 112, 99, 0.15);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.cardTitle {
+  font-size: 20px;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.badgeOk {
+  background: #e4f1ea;
+  color: #2b5d3c;
+}
+
+.badgeWarn {
+  background: #efe3b6;
+  color: #7a5c00;
+}
+
+.badgeBad {
+  background: #f3d3cf;
+  color: #7b2b22;
+}
+
+.badgeMuted {
+  background: #e7e1da;
+  color: #5b564f;
+}
+
+.tripList {
+  display: grid;
+  gap: 10px;
+}
+
+.tripRow {
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid #e1dbd2;
+  background: #fffefb;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 16px;
+}
+
+.tripEntry {
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid #e1dbd2;
+  background: #fffefb;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statusText {
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.statusTextOk {
+  color: #2b5d3c;
+  background: #e4f1ea;
+}
+
+.statusTextWarn {
+  color: #7a5c00;
+  background: #efe3b6;
+}
+
+.statusTextBad {
+  color: #7b2b22;
+  background: #f3d3cf;
+}
+
+.statusTextMuted {
+  color: #5b564f;
+  background: #e7e1da;
+}
+
+.directionTag {
+  font-weight: 600;
+  background: #f2ede6;
+  color: #5b564f;
+}
+
+.timingTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #efe3b6;
+  color: #7a5c00;
+  margin-left: 6px;
+}
+
+.tripTime {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.note {
+  font-size: 13px;
+  color: #5d5952;
+}
+
+.directionTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #efe9e1;
+  color: #5b564f;
+  margin-bottom: 6px;
+  width: fit-content;
+}
+
+
+.cardLink {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #393532;
+  background: #fdfaf5;
+}
+
+.weatherGrid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.weatherCard {
+  background: #fdfaf5;
+  border-radius: 18px;
+  padding: 16px;
+  border: 1px solid #d9d2c9;
+}
+
+.weatherTitle {
+  font-size: 16px;
+  color: #5b564f;
+}
+
+.weatherValue {
+  font-size: 22px;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.footerNote {
+  font-size: 12px;
+  color: #6b6760;
+  margin-top: 24px;
+}
+
+.sourceList {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.sourceItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fdfaf5;
+  border: 1px solid #dfd8cf;
+}
+
+.sourceLink {
+  border: 1px solid #393532;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  white-space: nowrap;
+}

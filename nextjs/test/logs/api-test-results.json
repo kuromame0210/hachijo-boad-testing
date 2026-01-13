@@ -1,0 +1,100 @@
+{
+  "timestamp": "2026-01-12T06:58:50.634Z",
+  "baseUrl": "http://localhost:3000",
+  "results": [
+    {
+      "endpoint": "/api/fetch/tokaikisen",
+      "status": 200,
+      "ok": true,
+      "warnings": 0,
+      "warningsList": [],
+      "normalizedLength": 3,
+      "errorMessage": null,
+      "coverage": {
+        "type": "transport",
+        "status": true,
+        "depPlanned": true,
+        "arrPlanned": false,
+        "estimated": false,
+        "delayMinutes": false,
+        "note": true,
+        "fetchedAt": true
+      }
+    },
+    {
+      "endpoint": "/api/fetch/umisora",
+      "status": 200,
+      "ok": true,
+      "warnings": 0,
+      "warningsList": [],
+      "normalizedLength": 4,
+      "errorMessage": null,
+      "coverage": {
+        "type": "transport",
+        "status": true,
+        "depPlanned": true,
+        "arrPlanned": true,
+        "estimated": false,
+        "delayMinutes": false,
+        "note": true,
+        "fetchedAt": true
+      }
+    },
+    {
+      "endpoint": "/api/fetch/weather/wind",
+      "status": 200,
+      "ok": true,
+      "warnings": 0,
+      "warningsList": [],
+      "normalizedLength": 4,
+      "errorMessage": null,
+      "coverage": {
+        "type": "weather_wind",
+        "windSpeedMs": true,
+        "windGustMs": true,
+        "windDirectionDeg": true,
+        "time": true,
+        "fetchedAt": true
+      }
+    },
+    {
+      "endpoint": "/api/fetch/weather/wave",
+      "status": 200,
+      "ok": true,
+      "warnings": 1,
+      "warningsList": [
+        "港ピンポイント観測ではなく近傍代表地点を使用"
+      ],
+      "normalizedLength": 8,
+      "errorMessage": null,
+      "coverage": {
+        "type": "weather_wave",
+        "waveHeightM": true,
+        "wavePeriodS": true,
+        "swellDirectionDeg": true,
+        "time": true,
+        "fetchedAt": true
+      }
+    },
+    {
+      "endpoint": "/api/fetch/weather/typhoon",
+      "status": 200,
+      "ok": true,
+      "warnings": 1,
+      "warningsList": [
+        "台風情報が見つかりませんでした"
+      ],
+      "normalizedLength": 0,
+      "errorMessage": null,
+      "coverage": {
+        "type": "weather_typhoon",
+        "typhoonPresent": false,
+        "typhoonName": false,
+        "typhoonId": false,
+        "typhoonDistanceKm": false,
+        "noTyphoonWarning": true,
+        "fetchedAt": true
+      }
+    }
+  ]
+}
