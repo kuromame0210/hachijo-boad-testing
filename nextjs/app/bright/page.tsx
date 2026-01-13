@@ -1,6 +1,6 @@
 import styles from "./bright.module.css"
 import DebugHeader from "@/lib/components/DebugHeader"
-import { fetchEnvelope, pickPrimaryStatus, type StatusMeta } from "@/lib/public/summary"
+import { fetchSavedEnvelope, pickPrimaryStatus, type StatusMeta } from "@/lib/public/summary"
 
 export const dynamic = "force-dynamic"
 
@@ -131,11 +131,11 @@ function pickTimingLabel(title?: string) {
 
 export default async function BrightPage() {
   const [tokaikisen, umisora, wind, wave, typhoon] = await Promise.all([
-    fetchEnvelope<TransportItem>("/api/fetch/tokaikisen"),
-    fetchEnvelope<TransportItem>("/api/fetch/umisora"),
-    fetchEnvelope<WeatherItem>("/api/fetch/weather/wind"),
-    fetchEnvelope<WeatherItem>("/api/fetch/weather/wave"),
-    fetchEnvelope<WeatherItem>("/api/fetch/weather/typhoon"),
+    fetchSavedEnvelope<TransportItem>("tokaikisen"),
+    fetchSavedEnvelope<TransportItem>("umisora"),
+    fetchSavedEnvelope<WeatherItem>("wind"),
+    fetchSavedEnvelope<WeatherItem>("wave"),
+    fetchSavedEnvelope<WeatherItem>("typhoon"),
   ])
 
   const transportCards: CardData[] = [

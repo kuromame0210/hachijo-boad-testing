@@ -73,6 +73,45 @@ export async function fetchEnvelope<T>(endpoint: string): Promise<DebugEnvelope<
   return null
 }
 
+type SavedRecord<T> = {
+  payload: DebugEnvelope<T>
+  savedAt: string
+}
+
+type SavedResponse<T> = {
+  ok: boolean
+  records?: Record<string, SavedRecord<T>>
+  error?: string
+}
+
+export async function fetchSavedEnvelope<T>(key: string): Promise<DebugEnvelope<T> | null> {
+  try {
+    const baseUrl = await getBaseUrl()
+    const response = await fetch(
+      `${baseUrl}/api/debug/read-report?key=${encodeURIComponent(key)}`,
+      { cache: "no-store" }
+    )
+    if (response.ok) {
+      const data = (await response.json()) as SavedResponse<T>
+      return data.records?.[key]?.payload ?? null
+    }
+  } catch {
+    // fall through
+  }
+  try {
+    const response = await fetch(`/api/debug/read-report?key=${encodeURIComponent(key)}`, {
+      cache: "no-store",
+    })
+    if (response.ok) {
+      const data = (await response.json()) as SavedResponse<T>
+      return data.records?.[key]?.payload ?? null
+    }
+  } catch {
+    // fall through
+  }
+  return null
+}
+
 async function getBaseUrl() {
   const env =
     process.env.NEXT_PUBLIC_BASE_URL ??

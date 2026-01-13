@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import RawViewer from "@/lib/components/RawViewer"
 import DebugHeader from "@/lib/components/DebugHeader"
 import type { DebugEnvelope } from "@/lib/debug/debugEnvelope"
@@ -108,6 +108,23 @@ export default function WeatherPage() {
     },
   ]
 
+  const loadSaved = useCallback(async (keys: string[]) => {
+    try {
+      const params = new URLSearchParams({ keys: keys.join(",") })
+      const response = await fetch(`/api/debug/read-report?${params.toString()}`, {
+        cache: "no-store",
+      })
+      if (!response.ok) return {}
+      const data = (await response.json()) as {
+        ok: boolean
+        records?: Record<string, { payload: DebugEnvelope<WeatherNormalizedItem> }>
+      }
+      return data.records ?? {}
+    } catch {
+      return {}
+    }
+  }, [])
+
   const persistResult = async (
     key: string,
     endpoint: string,
@@ -131,6 +148,10 @@ export default function WeatherPage() {
       const payload = (await response.json()) as DebugEnvelope<WeatherNormalizedItem>
       setDataByTab((prev) => ({ ...prev, [activeDef.key]: payload }))
       await persistResult(activeDef.key, activeDef.endpoint, payload)
+      const records = await loadSaved([activeDef.key])
+      if (records[activeDef.key]?.payload) {
+        setDataByTab((prev) => ({ ...prev, [activeDef.key]: records[activeDef.key].payload }))
+      }
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error"
       const fallback: DebugEnvelope<WeatherNormalizedItem> = {
@@ -142,6 +163,10 @@ export default function WeatherPage() {
       }
       setDataByTab((prev) => ({ ...prev, [activeDef.key]: fallback }))
       await persistResult(activeDef.key, activeDef.endpoint, fallback)
+      const records = await loadSaved([activeDef.key])
+      if (records[activeDef.key]?.payload) {
+        setDataByTab((prev) => ({ ...prev, [activeDef.key]: records[activeDef.key].payload }))
+      }
     } finally {
       setLoadingTab(null)
     }
@@ -181,10 +206,35 @@ export default function WeatherPage() {
         }
         return next
       })
+      const records = await loadSaved(TAB_DEFS.map((tab) => tab.key))
+      if (Object.keys(records).length) {
+        setDataByTab((prev) => {
+          const next = { ...prev }
+          for (const [key, record] of Object.entries(records)) {
+            next[key] = record.payload
+          }
+          return next
+        })
+      }
     } finally {
       setLoadingAll(false)
     }
   }
+
+  useEffect(() => {
+    if (dataByTab[activeDef.key]) return
+    let cancelled = false
+    loadSaved([activeDef.key]).then((records) => {
+      if (cancelled) return
+      const record = records[activeDef.key]?.payload
+      if (record) {
+        setDataByTab((prev) => ({ ...prev, [activeDef.key]: record }))
+      }
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [activeDef.key, dataByTab, loadSaved])
 
   return (
     <div className="page">

@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises"
 import path from "node:path"
 import DebugHeader from "@/lib/components/DebugHeader"
+import { fetchSavedEnvelope } from "@/lib/public/summary"
 
 type ApiResult = {
   endpoint: string
@@ -49,12 +50,6 @@ type WeatherItem = {
   note?: string
 }
 
-type DebugEnvelope<T> = {
-  ok: boolean
-  fetchedAt: string
-  normalized?: T[]
-}
-
 const REPORT_PATH = path.resolve(process.cwd(), "test/logs/api-test-results.json")
 
 async function loadReport(): Promise<ApiTestReport | null> {
@@ -66,26 +61,16 @@ async function loadReport(): Promise<ApiTestReport | null> {
   }
 }
 
-async function loadEndpoint<T>(endpoint: string): Promise<DebugEnvelope<T> | null> {
-  try {
-    const response = await fetch(`http://localhost:3000${endpoint}`, { cache: "no-store" })
-    if (!response.ok) return null
-    return (await response.json()) as DebugEnvelope<T>
-  } catch {
-    return null
-  }
-}
-
 export default async function TestPreviewPage() {
   const report = await loadReport()
   const transportData = await Promise.all([
-    loadEndpoint<TransportItem>("/api/fetch/tokaikisen"),
-    loadEndpoint<TransportItem>("/api/fetch/umisora"),
+    fetchSavedEnvelope<TransportItem>("tokaikisen"),
+    fetchSavedEnvelope<TransportItem>("umisora"),
   ])
   const weatherData = await Promise.all([
-    loadEndpoint<WeatherItem>("/api/fetch/weather/wind"),
-    loadEndpoint<WeatherItem>("/api/fetch/weather/wave"),
-    loadEndpoint<WeatherItem>("/api/fetch/weather/typhoon"),
+    fetchSavedEnvelope<WeatherItem>("wind"),
+    fetchSavedEnvelope<WeatherItem>("wave"),
+    fetchSavedEnvelope<WeatherItem>("typhoon"),
   ])
 
   const transportItems = transportData.flatMap((entry) => entry?.normalized ?? []).slice(0, 10)
