@@ -54,7 +54,7 @@ export function pickPrimaryStatus(items: { status?: string }[]): StatusMeta {
 
 export async function fetchEnvelope<T>(endpoint: string): Promise<DebugEnvelope<T> | null> {
   try {
-    const baseUrl = getBaseUrl()
+    const baseUrl = await getBaseUrl()
     const response = await fetch(`${baseUrl}${endpoint}`, { cache: "no-store" })
     if (response.ok) {
       return (await response.json()) as DebugEnvelope<T>
@@ -73,7 +73,7 @@ export async function fetchEnvelope<T>(endpoint: string): Promise<DebugEnvelope<
   return null
 }
 
-function getBaseUrl() {
+async function getBaseUrl() {
   const env =
     process.env.NEXT_PUBLIC_BASE_URL ??
     process.env.BASE_URL ??
@@ -81,7 +81,7 @@ function getBaseUrl() {
   if (env) {
     return env.startsWith("http") ? env : `https://${env}`
   }
-  const headerList = headers()
+  const headerList = await headers()
   const proto = headerList.get("x-forwarded-proto") ?? "http"
   const host = headerList.get("x-forwarded-host") ?? headerList.get("host")
   if (host) return `${proto}://${host}`

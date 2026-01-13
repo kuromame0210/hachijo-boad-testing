@@ -133,7 +133,7 @@ export default function Home() {
     setLoadingTab(activeDef.key)
     try {
       const response = await fetch(activeDef.endpoint, { cache: "no-store" })
-      const payload = (await response.json()) as DebugEnvelope
+      const payload = (await response.json()) as DebugEnvelope<TransportNormalizedItem>
       setDataByTab((prev) => ({ ...prev, [activeDef.key]: payload }))
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error"

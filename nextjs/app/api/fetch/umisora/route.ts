@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
-import { load, type Element } from "cheerio"
+import { load } from "cheerio"
+import type { Element } from "domhandler"
 import { buildDebugEnvelope } from "@/lib/debug/debugEnvelope"
 import type { TransportNormalizedItem } from "@/lib/schema/transport"
 import { fetchText } from "@/lib/http/fetchText"
