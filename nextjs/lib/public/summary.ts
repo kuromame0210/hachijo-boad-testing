@@ -81,18 +81,24 @@ type SavedRecord<T> = {
 type SavedResponse<T> = {
   ok: boolean
   records?: Record<string, SavedRecord<T>>
+  source?: string
   error?: string
 }
 
 export async function fetchSavedEnvelope<T>(key: string): Promise<DebugEnvelope<T> | null> {
   try {
     const baseUrl = await getBaseUrl()
+    console.info("[fetchSavedEnvelope] baseUrl", baseUrl, "key", key)
     const response = await fetch(
       `${baseUrl}/api/debug/read-report?key=${encodeURIComponent(key)}`,
       { cache: "no-store" }
     )
+    if (!response.ok) {
+      console.warn("[fetchSavedEnvelope] failed", response.status, "key", key)
+    }
     if (response.ok) {
       const data = (await response.json()) as SavedResponse<T>
+      console.info("[fetchSavedEnvelope] source", data.source ?? "unknown", "key", key)
       return data.records?.[key]?.payload ?? null
     }
   } catch {
