@@ -2,6 +2,8 @@ import styles from "./bright.module.css"
 import DebugHeader from "@/lib/components/DebugHeader"
 import { fetchEnvelope, pickPrimaryStatus, type StatusMeta } from "@/lib/public/summary"
 
+export const dynamic = "force-dynamic"
+
 type TransportItem = {
   status?: string
   statusText?: string
