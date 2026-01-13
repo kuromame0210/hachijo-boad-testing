@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server"
-import { DEBUG_REPORTS_TABLE, getSupabaseServer } from "@/lib/db/supabaseServer"
+import { DEBUG_REPORTS_TABLE, getSupabaseConfig, getSupabaseServer } from "@/lib/db/supabaseServer"
+
+export const runtime = "nodejs"
 
 type SaveReportPayload = {
   key: string
@@ -22,16 +24,26 @@ export async function POST(request: Request) {
       payload: body.payload,
     }
     if (!hasSupabaseConfig) {
+      const config = getSupabaseConfig()
       return NextResponse.json(
-        { ok: false, error: "Supabase configuration is missing." },
+        {
+          ok: false,
+          error: "Supabase configuration is missing.",
+          details: config,
+        },
         { status: 503 }
       )
     }
 
     const client = getSupabaseServer()
     if (!client) {
+      const config = getSupabaseConfig()
       return NextResponse.json(
-        { ok: false, error: "Supabase client is not available." },
+        {
+          ok: false,
+          error: "Supabase client is not available.",
+          details: config,
+        },
         { status: 503 }
       )
     }

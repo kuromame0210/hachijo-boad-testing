@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server"
-import { DEBUG_REPORTS_TABLE, getSupabaseServer } from "@/lib/db/supabaseServer"
+import { DEBUG_REPORTS_TABLE, getSupabaseConfig, getSupabaseServer } from "@/lib/db/supabaseServer"
+
+export const runtime = "nodejs"
 
 export async function GET(request: Request) {
   try {
@@ -16,7 +18,11 @@ export async function GET(request: Request) {
     const client = getSupabaseServer()
     if (!client) {
       return NextResponse.json(
-        { ok: false, error: "Supabase configuration is missing." },
+        {
+          ok: false,
+          error: "Supabase configuration is missing.",
+          details: getSupabaseConfig(),
+        },
         { status: 503 }
       )
     }
