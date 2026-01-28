@@ -1,0 +1,400 @@
+.page {
+  --hachijo-blue: #3b8cc9;
+  --island-sun: #f1c75b;
+  --sunset-red: #e06551;
+  --ink: #111417;
+  --mist: #f3f5f7;
+  min-height: 100vh;
+  padding: 32px clamp(16px, 4vw, 56px) 96px;
+  color: var(--ink);
+  font-family: "Cormorant Garamond", "Libre Baskerville", Georgia, serif;
+  background: linear-gradient(180deg, #f6fbff 0%, #fff6e1 50%, #ffe9e1 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.page::before,
+.page::after {
+  content: "";
+  position: absolute;
+  inset: auto;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  filter: blur(10px);
+  opacity: 0.35;
+  z-index: 0;
+  animation: float 16s ease-in-out infinite;
+}
+
+.page::before {
+  background: radial-gradient(circle, var(--hachijo-blue), transparent 70%);
+  top: -180px;
+  left: -120px;
+}
+
+.page::after {
+  background: radial-gradient(circle, var(--sunset-red), transparent 70%);
+  bottom: -200px;
+  right: -140px;
+  animation-delay: -6s;
+}
+
+.hero {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 28px;
+  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  padding: clamp(24px, 4vw, 40px);
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(59, 140, 201, 0.18), rgba(241, 199, 91, 0.22), rgba(224, 101, 81, 0.2));
+  border: 1px solid rgba(17, 20, 23, 0.08);
+  box-shadow: 0 24px 60px rgba(31, 66, 97, 0.2);
+}
+
+.heroText {
+  display: grid;
+  gap: 12px;
+}
+
+.heroEyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 11px;
+  color: rgba(17, 20, 23, 0.6);
+}
+
+.heroTitle {
+  font-size: clamp(30px, 4vw, 46px);
+  margin: 0;
+}
+
+.heroCopy {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.heroMeta {
+  font-size: 14px;
+  color: rgba(17, 20, 23, 0.7);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.primaryAction,
+.secondaryAction {
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  border: 1px solid rgba(17, 20, 23, 0.6);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.primaryAction {
+  background: rgba(17, 20, 23, 0.9);
+  color: #fff;
+}
+
+.secondaryAction {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.heroPanel {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(17, 20, 23, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.panelItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 15px;
+}
+
+.panelLabel {
+  color: rgba(17, 20, 23, 0.65);
+}
+
+.panelValue {
+  font-weight: 600;
+}
+
+.section {
+  margin-top: 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.sectionHeader {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.sectionTitle {
+  font-size: 24px;
+  margin: 0;
+}
+
+.sectionNote {
+  font-size: 14px;
+  color: rgba(17, 20, 23, 0.65);
+}
+
+.cards {
+  display: grid;
+  gap: 18px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 20px;
+  padding: 20px;
+  border: 1px solid rgba(17, 20, 23, 0.1);
+  box-shadow: 0 18px 40px rgba(17, 20, 23, 0.1);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.cardTitle {
+  font-size: 20px;
+  margin: 0;
+}
+
+.cardSub {
+  font-size: 13px;
+  color: rgba(17, 20, 23, 0.6);
+  margin-top: 6px;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.badgeOk {
+  background: rgba(62, 135, 84, 0.2);
+  color: #1e5f3c;
+}
+
+.badgeWarn {
+  background: rgba(241, 199, 91, 0.3);
+  color: #7a4c00;
+}
+
+.badgeBad {
+  background: rgba(224, 101, 81, 0.26);
+  color: #7a2b22;
+}
+
+.badgeMuted {
+  background: rgba(17, 20, 23, 0.12);
+  color: rgba(17, 20, 23, 0.7);
+}
+
+.tripList {
+  display: grid;
+  gap: 12px;
+}
+
+.tripRow {
+  display: grid;
+  gap: 8px;
+}
+
+.tripEntry {
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(17, 20, 23, 0.1);
+  background: rgba(255, 255, 255, 0.86);
+  display: grid;
+  gap: 6px;
+}
+
+.tripTime {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.tripTitle {
+  font-size: 14px;
+}
+
+.tripNote {
+  font-size: 13px;
+  color: rgba(17, 20, 23, 0.65);
+}
+
+.directionTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(59, 140, 201, 0.2);
+  color: #215a82;
+  width: fit-content;
+}
+
+.timingTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(241, 199, 91, 0.35);
+  color: #7a4c00;
+  margin-left: 6px;
+}
+
+.statusText {
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.statusTextOk {
+  color: #1e5f3c;
+  background: rgba(62, 135, 84, 0.2);
+}
+
+.statusTextWarn {
+  color: #7a4c00;
+  background: rgba(241, 199, 91, 0.3);
+}
+
+.statusTextBad {
+  color: #7a2b22;
+  background: rgba(224, 101, 81, 0.3);
+}
+
+.statusTextMuted {
+  color: rgba(17, 20, 23, 0.7);
+  background: rgba(17, 20, 23, 0.12);
+}
+
+.cardLink {
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 20, 23, 0.6);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.weatherGrid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.weatherCard {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 18px;
+  padding: 16px;
+  border: 1px solid rgba(17, 20, 23, 0.1);
+  display: grid;
+  gap: 8px;
+}
+
+.weatherTitle {
+  font-size: 15px;
+  color: rgba(17, 20, 23, 0.7);
+}
+
+.weatherValue {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.weatherNote {
+  font-size: 13px;
+  color: rgba(17, 20, 23, 0.65);
+}
+
+.footerNote {
+  font-size: 12px;
+  color: rgba(17, 20, 23, 0.65);
+  margin-top: 24px;
+}
+
+.sourceGrid {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.sourceItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(17, 20, 23, 0.1);
+}
+
+.sourceLink {
+  border: 1px solid rgba(17, 20, 23, 0.6);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+@keyframes float {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 24px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (max-width: 720px) {
+  .hero {
+    padding: 20px;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .heroPanel {
+    grid-template-columns: 1fr;
+  }
+}

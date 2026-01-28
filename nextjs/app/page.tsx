@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import RawViewer from "@/lib/components/RawViewer"
 import DebugHeader from "@/lib/components/DebugHeader"
 import type { DebugEnvelope } from "@/lib/debug/debugEnvelope"
@@ -89,6 +90,7 @@ const TAB_DEFS = [
 ]
 
 export default function Home() {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState(TAB_DEFS[0].key)
   const [dataByTab, setDataByTab] = useState<
     Record<string, DebugEnvelope<TransportNormalizedItem> | null>
@@ -265,6 +267,9 @@ export default function Home() {
         eyebrow="技術検証"
         actions={
           <div className="header-actions">
+            <button type="button" onClick={() => router.push("/pc-mock")}>
+              PCモックへ
+            </button>
             <button type="button" onClick={handleRefreshAll} disabled={loadingAll}>
               {loadingAll ? "Refreshing all..." : "Refresh all"}
             </button>
