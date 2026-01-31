@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react"
 import styles from "./pc-mock.module.css"
 import type { TransportNormalizedItem, TransportStatus } from "@/lib/schema/transport"
+import Clock from "react-clock"
+import "react-clock/dist/Clock.css"
 
 const flightStatuses: Array<{ id: string; label: string; tone: StatusTone }> = [
   { id: "ANA1891", label: "就航", tone: "ok" },
@@ -235,14 +237,9 @@ export default function PcMockPage() {
 
         <main className={styles.main}>
           <section className={`${styles.clockPanel} ${styles.fadeInOne}`}>
-            <div className={styles.clockFace}>
-              <div className={styles.clockRing} />
-              <div className={styles.clockIsland} />
-              <div className={styles.clockHandHour} />
-              <div className={styles.clockHandMinute} />
-              <div className={styles.clockHandSecond} />
+            <div className={styles.clockDisplay} aria-label="現在時刻">
+              <Clock value={now} renderNumbers />
             </div>
-            <div className={styles.clockTime}>{timeLabel}</div>
           </section>
 
           <section className={`${styles.infoPanel} ${styles.fadeInTwo}`}>

@@ -132,6 +132,41 @@
   gap: 16px;
 }
 
+.clockDisplay {
+  width: clamp(220px, 30vw, 320px);
+  height: clamp(220px, 30vw, 320px);
+  border-radius: 50%;
+  background: #e9f4fb;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 320'><circle cx='160' cy='160' r='160' fill='%23e9f4fb'/><circle cx='160' cy='160' r='142' fill='%23d5e8f6'/><circle cx='110' cy='108' r='26' fill='%23c6e0f1'/></svg>");
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 0 0 10px #7aa6c5, 0 18px 30px rgba(88, 126, 154, 0.35);
+}
+
+.clockDisplay :global(.react-clock) {
+  background: transparent;
+  width: 90%;
+  height: 90%;
+}
+
+.clockDisplay :global(.react-clock__face) {
+  border: none;
+}
+
+.clockDisplay :global(.react-clock__mark__body) {
+  background: #2c3e4d;
+}
+
+.clockDisplay :global(.react-clock__hand__body) {
+  background: #7a4b33;
+}
+
+.clockDisplay :global(.react-clock__second-hand__body) {
+  background: #de6d51;
+}
+
 .clockFace {
   width: clamp(220px, 30vw, 320px);
   height: clamp(220px, 30vw, 320px);
