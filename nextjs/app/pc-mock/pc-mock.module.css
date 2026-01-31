@@ -147,8 +147,8 @@
 
 .clockDisplay :global(.react-clock) {
   background: transparent;
-  width: 90%;
-  height: 90%;
+  width: 90% !important;
+  height: 90% !important;
 }
 
 .clockDisplay :global(.react-clock__face) {
