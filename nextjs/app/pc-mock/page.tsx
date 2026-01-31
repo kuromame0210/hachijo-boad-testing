@@ -1,7 +1,8 @@
- "use client"
+"use client"
 
 import { useEffect, useState } from "react"
 import styles from "./pc-mock.module.css"
+import type { TransportNormalizedItem, TransportStatus } from "@/lib/schema/transport"
 
 const flightStatuses = [
   { id: "ANA1891", label: "就航", tone: "ok" },
@@ -9,12 +10,12 @@ const flightStatuses = [
   { id: "ANA1895", label: "欠航", tone: "bad" },
 ]
 
-const shipStatuses = [
+const fallbackShipStatuses = [
   { id: "往路", label: "就航", tone: "ok" },
   { id: "復路", label: "条件付き", tone: "warn" },
 ]
 
-const heliStatuses = [
+const fallbackHeliStatuses = [
   { id: "八→青", label: "就航", tone: "ok" },
   { id: "青→八", label: "欠航", tone: "bad" },
   { id: "八→御", label: "条件付き", tone: "warn" },
@@ -25,14 +26,177 @@ function StatusDot({ tone }: { tone: "ok" | "warn" | "bad" }) {
   return <span className={`${styles.statusDot} ${styles[`statusDot${tone}`]}`} />
 }
 
+type StatusTone = "ok" | "warn" | "bad"
+
+const STATUS_LABELS: Record<StatusTone, string> = {
+  ok: "就航",
+  warn: "条件付き",
+  bad: "欠航",
+}
+
+function toneFromStatusText(statusText?: string, status?: TransportStatus): StatusTone | null {
+  if (statusText) {
+    if (statusText.includes("欠航") || statusText.includes("運休")) return "bad"
+    if (statusText.includes("条件") || statusText.includes("調査") || statusText.includes("遅延"))
+      return "warn"
+    if (statusText.includes("運航") || statusText.includes("就航")) return "ok"
+  }
+  switch (status) {
+    case "CANCELLED":
+    case "CLOSED":
+      return "bad"
+    case "SUSPENDED":
+    case "DELAYED":
+      return "warn"
+    case "ON_TIME":
+    case "OPEN":
+      return "ok"
+    default:
+      return null
+  }
+}
+
+function extractPortsFromTitle(title?: string) {
+  if (!title) return { depPort: undefined, arrPort: undefined }
+  const parts = title.split(" / ")
+  if (parts.length >= 4) {
+    return { depPort: parts[1], arrPort: parts[3] }
+  }
+  return { depPort: undefined, arrPort: undefined }
+}
+
+function extractPortsFromPortField(port?: string) {
+  if (!port) return { depPort: undefined, arrPort: undefined }
+  const parts = port.split(" / ")
+  if (parts.length >= 2) {
+    return { depPort: parts[0], arrPort: parts[1] }
+  }
+  return { depPort: undefined, arrPort: undefined }
+}
+
+function pickShipByDirection(items: TransportNormalizedItem[], direction: "outbound" | "inbound") {
+  const isOutbound = direction === "outbound"
+  const byPort = items.find((item) => {
+    const { depPort, arrPort } = extractPortsFromTitle(item.title)
+    if (isOutbound) return Boolean(arrPort?.includes("八丈"))
+    return Boolean(depPort?.includes("八丈"))
+  })
+  if (byPort) return byPort
+
+  const keywords = isOutbound
+    ? ["八丈島行き", "東京発", "竹芝発", "東京→", "東京-八丈", "東京～八丈"]
+    : ["八丈島発", "八丈→", "八丈-東京", "八丈～東京"]
+  return items.find((item) => keywords.some((word) => item.title.includes(word))) ?? null
+}
+
+function buildShipStatuses(items: TransportNormalizedItem[]) {
+  const next = fallbackShipStatuses.map((item) => ({ ...item }))
+  const outbound = pickShipByDirection(items, "outbound")
+  const inbound = pickShipByDirection(items, "inbound")
+
+  const applyItem = (index: number, item: TransportNormalizedItem | null) => {
+    if (!item) return
+    const tone = toneFromStatusText(item.statusText, item.status)
+    if (!tone) return
+    next[index] = {
+      ...next[index],
+      label: STATUS_LABELS[tone],
+      tone,
+    }
+  }
+
+  applyItem(0, outbound)
+  applyItem(1, inbound)
+  return next
+}
+
+function buildHeliStatuses(items: TransportNormalizedItem[]) {
+  const next = fallbackHeliStatuses.map((item) => ({ ...item }))
+  const applyItem = (index: number, item: TransportNormalizedItem | null) => {
+    if (!item) return
+    const tone = toneFromStatusText(item.statusText, item.status)
+    if (!tone) return
+    next[index] = {
+      ...next[index],
+      label: STATUS_LABELS[tone],
+      tone,
+    }
+  }
+
+  const outbound = items.find((item) => {
+    const { depPort, arrPort } = extractPortsFromPortField(item.port)
+    return Boolean(depPort?.includes("八丈")) && Boolean(arrPort?.includes("青ヶ島"))
+  })
+  const inbound = items.find((item) => {
+    const { depPort, arrPort } = extractPortsFromPortField(item.port)
+    return Boolean(depPort?.includes("青ヶ島")) && Boolean(arrPort?.includes("八丈"))
+  })
+
+  applyItem(0, outbound ?? null)
+  applyItem(1, inbound ?? null)
+  return next
+}
+
 export default function PcMockPage() {
   const [now, setNow] = useState(() => new Date())
+  const [shipStatuses, setShipStatuses] = useState(fallbackShipStatuses)
+  const [heliStatuses, setHeliStatuses] = useState(fallbackHeliStatuses)
 
   useEffect(() => {
     const tick = () => setNow(new Date())
     tick()
     const timer = setInterval(tick, 30 * 1000)
     return () => clearInterval(timer)
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    const loadShipStatuses = async () => {
+      try {
+        const response = await fetch("/api/debug/read-report?key=tokaikisen", {
+          cache: "no-store",
+        })
+        if (!response.ok) return
+        const data = (await response.json()) as {
+          ok: boolean
+          records?: Record<string, { payload?: { normalized?: TransportNormalizedItem[] } }>
+        }
+        const items = data.records?.tokaikisen?.payload?.normalized ?? []
+        if (cancelled || items.length === 0) return
+        setShipStatuses(buildShipStatuses(items))
+      } catch {
+        // keep fallback
+      }
+    }
+    loadShipStatuses()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    const loadHeliStatuses = async () => {
+      try {
+        const response = await fetch("/api/debug/read-report?key=umisora", {
+          cache: "no-store",
+        })
+        if (!response.ok) return
+        const data = (await response.json()) as {
+          ok: boolean
+          records?: Record<string, { payload?: { normalized?: TransportNormalizedItem[] } }>
+        }
+        const items = data.records?.umisora?.payload?.normalized ?? []
+        if (cancelled || items.length === 0) return
+        setHeliStatuses(buildHeliStatuses(items))
+      } catch {
+        // keep fallback
+      }
+    }
+    loadHeliStatuses()
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   const dateLabel = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日 (${new Intl.DateTimeFormat("ja-JP", { weekday: "short" }).format(now)})`

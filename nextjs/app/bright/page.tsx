@@ -1,6 +1,7 @@
 import styles from "./bright.module.css"
 import DebugHeader from "@/lib/components/DebugHeader"
 import { fetchSavedEnvelope, pickPrimaryStatus, type StatusMeta } from "@/lib/public/summary"
+import RefreshButton from "./refresh-button"
 
 export const dynamic = "force-dynamic"
 
@@ -182,9 +183,7 @@ export default async function BrightPage() {
         meta={<div className={styles.meta}>更新: {updatedAt}</div>}
         actions={
           <div className={styles.actions}>
-            <a className={styles.action} href="/bright">
-              更新
-            </a>
+            <RefreshButton />
             <a className={styles.action} href="/test/preview">
               詳細
             </a>
