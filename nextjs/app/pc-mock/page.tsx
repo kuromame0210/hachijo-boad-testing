@@ -4,18 +4,18 @@ import { useEffect, useState } from "react"
 import styles from "./pc-mock.module.css"
 import type { TransportNormalizedItem, TransportStatus } from "@/lib/schema/transport"
 
-const flightStatuses = [
+const flightStatuses: Array<{ id: string; label: string; tone: StatusTone }> = [
   { id: "ANA1891", label: "就航", tone: "ok" },
   { id: "ANA1893", label: "条件付き", tone: "warn" },
   { id: "ANA1895", label: "欠航", tone: "bad" },
 ]
 
-const fallbackShipStatuses = [
+const fallbackShipStatuses: Array<{ id: string; label: string; tone: StatusTone }> = [
   { id: "往路", label: "就航", tone: "ok" },
   { id: "復路", label: "条件付き", tone: "warn" },
 ]
 
-const fallbackHeliStatuses = [
+const fallbackHeliStatuses: Array<{ id: string; label: string; tone: StatusTone }> = [
   { id: "八→青", label: "就航", tone: "ok" },
   { id: "青→八", label: "欠航", tone: "bad" },
   { id: "八→御", label: "条件付き", tone: "warn" },
