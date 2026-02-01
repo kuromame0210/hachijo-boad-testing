@@ -216,8 +216,8 @@ export default function PcMockPage() {
           <div className={styles.brand}>
             <div className={styles.logo}>allo</div>
             <div className={styles.subtitle}>
-              <span className={styles.subtitleFull}>八丈島八丈島ライフロケット</span>
-              <span className={styles.subtitleShort}>八丈島ライフ</span>
+              <span className={styles.subtitleFull}>八丈島生活OS</span>
+              <span className={styles.subtitleShort}>八丈島生活OS</span>
             </div>
           </div>
           <div className={styles.topRight}>
