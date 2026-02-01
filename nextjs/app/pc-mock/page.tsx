@@ -252,8 +252,8 @@ export default function PcMockPage() {
               <div className={styles.panelHeader}>生活情報</div>
               <div className={styles.infoGrid}>
                 <div className={styles.dailyStack}>
-                <div className={styles.infoItem}>
-                  <div className={`${styles.iconSlot} ${styles.iconTrash}`} aria-label="ごみ" />
+                  <div className={styles.infoItem}>
+                    <div className={`${styles.iconSlot} ${styles.iconTrash}`} aria-label="ごみ" />
                   <div>
                     <div className={styles.infoTitle}>燃やせるゴミ</div>
                     <div className={styles.infoValue}>回収日</div>
@@ -271,9 +271,11 @@ export default function PcMockPage() {
                   <div>
                     <div className={styles.infoTitle}>風速</div>
                     <div className={styles.infoValue}>8m/s 北東</div>
+                    </div>
                   </div>
                 </div>
-                </div>
+
+                <div className={styles.trafficHeader}>交通情報</div>
 
                 <div className={styles.transportCard}>
                   <div className={styles.cardTitle}>飛行機・橘丸</div>
