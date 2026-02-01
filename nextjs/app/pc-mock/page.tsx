@@ -215,7 +215,10 @@ export default function PcMockPage() {
           <div className={styles.topLeft} aria-hidden="true" />
           <div className={styles.brand}>
             <div className={styles.logo}>allo</div>
-            <div className={styles.subtitle}>八丈島八丈島ライフロケット</div>
+            <div className={styles.subtitle}>
+              <span className={styles.subtitleFull}>八丈島八丈島ライフロケット</span>
+              <span className={styles.subtitleShort}>八丈島ライフ</span>
+            </div>
           </div>
           <div className={styles.topRight}>
             <div className={styles.dateBlock}>{dateLabel}</div>
@@ -237,104 +240,103 @@ export default function PcMockPage() {
 
         <main className={styles.main}>
           <section className={`${styles.clockPanel} ${styles.fadeInOne}`}>
+            <div className={styles.clockDate}>{dateLabel}</div>
             <div className={styles.clockDisplay} aria-label="現在時刻">
-              <Clock value={now} renderNumbers />
+              <Clock value={now} renderNumbers={false} />
             </div>
+            <div className={styles.clockDigital}>{timeLabel}</div>
           </section>
 
-          <section className={`${styles.infoPanel} ${styles.fadeInTwo}`}>
-            <div className={styles.panelHeader}>生活情報</div>
-            <div className={styles.infoGrid}>
-              <div className={styles.dailyStack}>
+          <div className={`${styles.contentStack} ${styles.fadeInTwo}`}>
+            <section className={styles.infoPanel}>
+              <div className={styles.panelHeader}>生活情報</div>
+              <div className={styles.infoGrid}>
+                <div className={styles.dailyStack}>
                 <div className={styles.infoItem}>
-                  <div className={styles.iconSlot}>ごみ</div>
+                  <div className={`${styles.iconSlot} ${styles.iconTrash}`} aria-label="ごみ" />
                   <div>
                     <div className={styles.infoTitle}>燃やせるゴミ</div>
                     <div className={styles.infoValue}>回収日</div>
                   </div>
                 </div>
                 <div className={styles.infoItem}>
-                  <div className={styles.iconSlot}>波</div>
+                  <div className={`${styles.iconSlot} ${styles.iconWave}`} aria-label="波" />
                   <div>
                     <div className={styles.infoTitle}>波浪</div>
                     <div className={styles.infoValue}>2.5m</div>
                   </div>
                 </div>
                 <div className={styles.infoItem}>
-                  <div className={styles.iconSlot}>風</div>
+                  <div className={`${styles.iconSlot} ${styles.iconWind}`} aria-label="風" />
                   <div>
                     <div className={styles.infoTitle}>風速</div>
                     <div className={styles.infoValue}>8m/s 北東</div>
                   </div>
                 </div>
-              </div>
+                </div>
 
-              <div className={styles.transportCard}>
-                <div className={styles.cardTitle}>飛行機・橘丸</div>
-                <div className={styles.transportSplit}>
-                  <div className={styles.transportBlock}>
-                    <div className={styles.cardSectionTitle}>東京羽田ー八丈島 (ANA)</div>
-                    <div className={styles.statusList}>
-                      {flightStatuses.map((item) => (
-                        <div key={item.id} className={styles.statusRow}>
-                          <StatusDot tone={item.tone} />
-                          <span className={styles.statusId}>{item.id}</span>
-                          <span className={`${styles.statusLabel} ${styles[`statusLabel${item.tone}`]}`}>
-                            {item.label}
-                          </span>
-                        </div>
-                      ))}
+                <div className={styles.transportCard}>
+                  <div className={styles.cardTitle}>飛行機・橘丸</div>
+                  <div className={styles.transportSplit}>
+                    <div className={styles.transportBlock}>
+                      <div className={styles.cardSectionTitle}>東京羽田ー八丈島 (ANA)</div>
+                      <div className={styles.statusList}>
+                        {flightStatuses.map((item) => (
+                          <div key={item.id} className={styles.statusRow}>
+                            <StatusDot tone={item.tone} />
+                            <span className={styles.statusId}>{item.id}</span>
+                            <span className={`${styles.statusLabel} ${styles[`statusLabel${item.tone}`]}`}>
+                              {item.label}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className={styles.transportBlock}>
+                      <div className={styles.cardSectionTitle}>東京竹芝ー八丈島 (橘丸)</div>
+                      <div className={styles.statusList}>
+                        {shipStatuses.map((item) => (
+                          <div key={item.id} className={styles.statusRow}>
+                            <StatusDot tone={item.tone} />
+                            <span className={styles.statusId}>{item.id}</span>
+                            <span className={`${styles.statusLabel} ${styles[`statusLabel${item.tone}`]}`}>
+                              {item.label}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                  <div className={styles.transportBlock}>
-                    <div className={styles.cardSectionTitle}>東京竹芝ー八丈島 (橘丸)</div>
-                    <div className={styles.statusList}>
-                      {shipStatuses.map((item) => (
-                        <div key={item.id} className={styles.statusRow}>
-                          <StatusDot tone={item.tone} />
-                          <span className={styles.statusId}>{item.id}</span>
-                          <span className={`${styles.statusLabel} ${styles[`statusLabel${item.tone}`]}`}>
-                            {item.label}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                </div>
+
+                <div className={styles.transportCard}>
+                  <div className={styles.cardTitle}>アイランドシャトル</div>
+                  <div className={styles.heliIcons}>
+                    <div className={styles.iconSlotSmall}>ヘリ</div>
+                    <div className={styles.iconSlotSmall}>ヘリ</div>
+                    <div className={styles.iconSlotSmall}>ヘリ</div>
+                    <div className={styles.iconSlotSmall}>ヘリ</div>
+                  </div>
+                  <div className={styles.heliStatusGrid}>
+                    {heliStatuses.map((item) => (
+                      <div key={item.id} className={styles.statusRow}>
+                        <StatusDot tone={item.tone} />
+                        <span className={styles.statusId}>{item.id}</span>
+                        <span className={`${styles.statusLabel} ${styles[`statusLabel${item.tone}`]}`}>
+                          {item.label}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
+            </section>
 
-              <div className={styles.transportCard}>
-                <div className={styles.cardTitle}>アイランドシャトル</div>
-                <div className={styles.heliIcons}>
-                  <div className={styles.iconSlotSmall}>ヘリ</div>
-                  <div className={styles.iconSlotSmall}>ヘリ</div>
-                  <div className={styles.iconSlotSmall}>ヘリ</div>
-                  <div className={styles.iconSlotSmall}>ヘリ</div>
-                </div>
-                <div className={styles.heliStatusGrid}>
-                  {heliStatuses.map((item) => (
-                    <div key={item.id} className={styles.statusRow}>
-                      <StatusDot tone={item.tone} />
-                      <span className={styles.statusId}>{item.id}</span>
-                      <span className={`${styles.statusLabel} ${styles[`statusLabel${item.tone}`]}`}>
-                        {item.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-        </main>
-
-        <section className={`${styles.banner} ${styles.fadeInThree}`}>
-          <div className={styles.bannerArt}>イラスト</div>
-          <div className={styles.bannerCopy}>
-            <div className={styles.bannerHeadline}>八丈島の夏、始まりました!</div>
-            <div className={styles.bannerSub}>特産品フェア開催中 (広告)</div>
+            <section className={styles.banner}>
+              <div className={styles.bannerImage} aria-label="広告バナー画像" />
+            </section>
           </div>
-          <div className={styles.bannerFood}>特産品</div>
-        </section>
+        </main>
       </div>
       <nav className={styles.bottomNav} aria-label="モバイルナビゲーション">
         <button className={styles.navItem} type="button">
