@@ -2,6 +2,7 @@ export type TransportServiceKey =
   | "ANA"
   | "TOKAIKISEN"
   | "UMISORA_AOGASHIMA"
+  | "UMISORA_HACHIJOJIMA"
   | "ISLAND_SHUTTLE"
   | "BUSINESS_HOURS"
 
