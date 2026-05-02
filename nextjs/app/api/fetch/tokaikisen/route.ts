@@ -51,7 +51,18 @@ export async function GET() {
         $(row)
           .find("th,td")
           .toArray()
-          .map((cell) => $(cell).text().trim())
+          .map((cell) => {
+            // ステータスセルはアイコンクラスからステータスを判定
+            const icon = $(cell).find("i.icon")
+            if (icon.length) {
+              const cls = icon.attr("class") ?? ""
+              if (cls.includes("icon--ok")) return "就航"
+              if (cls.includes("icon--attention")) return "条件付"
+              if (cls.includes("icon--ng") || cls.includes("icon--cross") || cls.includes("icon--cancel")) return "欠航"
+              if (cls.includes("icon-----")) return "---"
+            }
+            return $(cell).text().trim()
+          })
       )
       return { title: tableTitle, headers, rows: dataRows }
     })
